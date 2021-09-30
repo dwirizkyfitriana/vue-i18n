@@ -1,29 +1,45 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import { Trans } from '@/plugins/Translation';
 
-Vue.use(VueRouter)
+const load = (component) => {
+    return () => import(`@/views/${component}.vue`);
+};
+
+Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    {
+        path: '/:locale',
+        component: {
+            template: '<router-view></router-view>',
+        },
+		beforeEnter: Trans.routeMiddleware,
+        children: [
+            {
+                path: '',
+                name: 'Home',
+                component: load('Home'),
+            },
+            {
+                path: 'about',
+                name: 'About',
+                component: load('About'),
+            },
+        ],
+    },
+    {
+		path: '*',
+		redirect() {
+			return Trans.defaultLocale
+		}
+	},
+];
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes,
+});
 
-export default router
+export default router;

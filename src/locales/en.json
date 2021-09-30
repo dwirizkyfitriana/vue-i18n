@@ -1,0 +1,14 @@
+{
+  "MENU": {
+    "en": "English",
+    "id": "Indonesian",
+    "HOME": "Home",
+    "ABOUT": "About"
+  },
+  "MAIN": {
+    "WELCOME": "Hello from {company}!"
+  },
+  "ABOUT": {
+    "WELCOME": "Welcome to the About page!"
+  }
+}
